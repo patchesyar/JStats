@@ -1,3 +1,6 @@
+//example program to test the JSoup library.
+//credit to rgagnon of rgagnon.com
+
 package jsoupTest;
 import java.io.IOException;
 import java.util.List;
@@ -7,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
 
 public class HTMLUtils {
   private HTMLUtils() {}
