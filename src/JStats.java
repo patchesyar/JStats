@@ -27,16 +27,14 @@ public class JStats {
 	 * @param args In final version, contains the steam id (any format) of the inquired player
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException {
-		System.out.print("Insert the steam64 id: ");
+	public static void main(String[] args){
+		System.out.print("Insert the steam id: ");
 		Scanner sc= new Scanner(System.in);
 		String playerid= sc.next();
 		System.out.printf("\n");
-		//String sitename="http://sizzlingstats.com/player/"+playerid;
-		//Not using sizzlingstats as I try to work my way into JSoup. Soon™ 
-		//String sitename="https://www.cs.rit.edu/~csci142/Labs/06/Maze.html";
 		String sitename="http://steamidconverter.com/"+playerid;
-		String steam64=convert(sitename);
+		String steam64;
+		steam64 = convert(sitename);
 		System.out.println("sizzlingstats.com/player/"+steam64);
 		sc.close();
 	}
@@ -49,14 +47,19 @@ public class JStats {
 	 * @return ArrayList of all links in the target site
 	 * @throws IOException
 	 */
-	private static ArrayList<String> getLinks(String sitename) throws IOException {
+	private static ArrayList<String> getLinks(String sitename){
 		ArrayList<String> foundLinks= new ArrayList<String>();
-		Document doc=Jsoup.connect(sitename).get();
-		Elements links=doc.select("a[href]");
-		for (Element link: links){
-			foundLinks.add(link.attr("abs:href"));
+		Document doc;
+		try {
+			doc = Jsoup.connect(sitename).get();
+			Elements links=doc.select("a[href]");
+			for (Element link: links){
+				foundLinks.add(link.attr("abs:href"));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
 		return foundLinks;
 	}
 	
@@ -66,16 +69,16 @@ public class JStats {
 	 * @return
 	 * @throws IOException 
 	 */
-	private static String convert(String sitename) throws IOException{
+	private static String convert(String sitename){
 		String steam64=new String();
 		ArrayList<String> links= new ArrayList<String>();
-		links=getLinks(sitename); 
+		links=getLinks(sitename);
 		for(String link: links){
 			System.out.println(link);
 			if(link.contains("profiles")){
 				steam64=link.substring(35); //this should be where the steam64 starts
 			}
-		}
+		} 
 		return steam64;
 	}
 }
